@@ -1,0 +1,83 @@
+model:
+  NAME: GMMBaseSeg
+  encoder_args:
+    NAME: PointNextEncoder
+    blocks: [1, 3, 5, 3, 3]
+    strides: [1, 4, 4, 4, 4]
+    sa_layers: 1 
+    sa_use_res: False 
+    width: 32
+    in_channels: 7 
+    expansion: 4
+    radius: 0.05
+    nsample: 32
+    aggr_args:
+      feature_type: 'dp_fj'
+      reduction: 'max'
+    group_args:
+      NAME: 'ballquery'
+      normalize_dp: True
+    conv_args:
+      order: conv-norm-act
+    act_args:
+      act: 'relu'
+    norm_args:
+      norm: 'bn'
+  decoder_args:
+    NAME: GMMPointNextDecoder
+  cls_args:
+    NAME: PointNextGMMSeg
+    num_classes: 20 
+
+decoder_params:
+    embed_dim: 64
+    num_components: 5
+    factor_n: 1
+    factor_c: 1
+    factor_p: 1,
+    mem_size: 36000
+    max_sample_size: 40
+    update_GMM_interval: 5
+    update_loop: 5
+    
+preTrain:
+  is_pretrain: True
+
+
+max_unsupervised: 0
+unbranch_freq: 5
+
+uncriterion_args:
+  NAME: GudiePointContrastLoss
+  label_smoothing: 0.1
+  npos: 4096
+  T: 0.4
+  is_guide: False
+
+
+preLoadGMMConfig:
+  is_load_gmm: True
+  pretrain_path: /
+
+pretrained_path:
+dataset:
+  train:
+    data_rate: "r10"
+    loop: 30
+
+undataset:
+  common:
+    NAME: PreS3DIS
+    data_root: data/S3DIS/s3disfull
+    test_area: 5
+    voxel_size: 0.04
+  train:
+    split: train
+    voxel_max: 36000 # 36000
+    loop: 30  
+    presample: False
+
+
+
+batch_size: 8
+unbatch_size: 8
