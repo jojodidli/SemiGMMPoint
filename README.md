@@ -77,7 +77,10 @@ Please refer to https://github.com/facebookresearch/PointContrast for ScanNetV2 
 
 Please refer to https://github.com/lulutang0608/Point-BERT for ShapeNetPart preprocessing.
 
+##### SemanticKITTI
 
+Please refer to https://github.com/PRBonn/semantic-kitti-api
+for SemanticKITTI preprocessing
 
 >  The location for modifying the dataset path is: `SemiGMMPoint\cfgs\...\Name.cfg` and `dataset` data structure.
 
